@@ -5,11 +5,10 @@ import java.util.Iterator;
 /**
  * Created by Luka on 05/12/14.
  */
-public interface ShellComand {
+public interface ShellCommand {
 
     String getCommandName();
     String getCommandDescription();
-    CommandStatus execute(Environment, String);
-
+    CommandStatus execute(Environment environment, String inputArguments);
 
 }

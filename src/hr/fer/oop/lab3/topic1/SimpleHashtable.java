@@ -4,7 +4,7 @@ import java.util.Iterator;
 import java.util.NoSuchElementException;
 
 /**
- * HashTable class with static nested class TableEntry
+ * HashTable class with static nested class
  *
  * @author Luka
  * @version 1.00
@@ -320,7 +320,6 @@ public class SimpleHashtable implements Iterable<SimpleHashtable.TableEntry> {
                 next();
                 currentEntryKey = oldCurrentEntryKey;
                 return true;
-
             } catch (NoSuchElementException e) {
                 return false;
             }
@@ -378,7 +377,7 @@ public class SimpleHashtable implements Iterable<SimpleHashtable.TableEntry> {
     }
 
 
-    static class TableEntry {
+    public static class TableEntry {
         private Object key;
         private Object value;
         private TableEntry next;

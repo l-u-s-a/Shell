@@ -3,19 +3,25 @@ package hr.fer.oop.lab3.topic1.shell;
 /**
  * Created by Luka on 05/12/14.
  */
-public class AbstractCommand implements ShellComand {
+public abstract class AbstractCommand implements ShellCommand {
+
+    private String commandName;
+    private String commandDescription;
+
+    public AbstractCommand(String commandName, String commandDescription) {
+        this.commandName = commandName;
+        this.commandDescription = commandDescription;
+    }
+
+
     @Override
     public String getCommandName() {
-        return null;
+        return commandName;
     }
 
     @Override
     public String getCommandDescription() {
-        return null;
+        return commandDescription;
     }
 
-    @Override
-    public CommandStatus execute() {
-        return null;
-    }
 }
