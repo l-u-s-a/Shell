@@ -22,7 +22,12 @@ public class MyShell {
                 new HelpCommand(),
                 new QuitCommand(),
                 new CdCommand(),
-                new TerminalCommand()
+                new TerminalCommand(),
+                new FileCommand(),
+                new FilterCommand(),
+                new ListCommand(),
+                new CopyCommand(),
+                new XCopyCommand()
         };
 
         for (ShellCommand c : cc)
@@ -50,11 +55,18 @@ public class MyShell {
             try {
                 shellCommand = (ShellCommand) commands.get(command);
                 status = shellCommand.execute(environment, arguments);
+            } catch (CommandException e) {
+                environment.writeln(e.getMessage());
+                continue;
+            } catch (IndexOutOfBoundsException e) {
+                environment.writeln(e.getMessage());
+                continue;
+            }catch (NullPointerException e) {
+                environment.writeln(e.getMessage());
+                continue;
             } catch (IllegalArgumentException e){
                 environment.writeln(line + " is not recognized as valid command");
                 continue;
-            } catch (CommandException e){
-                environment.writeln(e.getMessage());
             }
 
         } while (status == CommandStatus.CONTINUE);

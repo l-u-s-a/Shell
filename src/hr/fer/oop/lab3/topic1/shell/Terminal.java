@@ -1,7 +1,5 @@
 package hr.fer.oop.lab3.topic1.shell;
 
-import com.sun.deploy.util.StringUtils;
-
 import java.io.File;
 import java.nio.file.Path;
 import java.nio.file.Paths;
