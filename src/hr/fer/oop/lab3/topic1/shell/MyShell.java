@@ -44,12 +44,11 @@ public class MyShell {
         do {
             Terminal activeTerminal = environment.getActiveTerminal();
             environment.write(activeTerminal.getPrompt());
-            String line = environment.readLine();
+            String inputLine = environment.readLine();
 
-            String[] inputList = line.split(" ");
+            String command = getCommandFromInputLine(inputLine);
 
-            String command = inputList[0];
-            String arguments = inputList.length > 1 ? inputList[1] : "";
+            String arguments = getInputArgumentsFromInputLine(inputLine);
 
             ShellCommand shellCommand;
             try {
@@ -65,7 +64,7 @@ public class MyShell {
                 environment.writeln(e.getMessage());
                 continue;
             } catch (IllegalArgumentException e){
-                environment.writeln(line + " is not recognized as valid command");
+                environment.writeln(inputLine + " is not recognized as valid command");
                 continue;
             }
 
@@ -73,6 +72,26 @@ public class MyShell {
 
         environment.writeln("Thank you for using this shell. Goodbye!");
 
+    }
+
+    private static String getCommandFromInputLine(String inputLine) {
+        String[] inputList = inputLine.split(" ");
+        String command = inputList[0];
+        return command;
+    }
+
+    private static String getInputArgumentsFromInputLine(String inputLine) {
+        String [] inputList = inputLine.split(" ");
+
+        if (inputList.length < 2) return "";
+
+        StringBuilder stringBuilder = new StringBuilder();
+
+        for (int i = 1; i < inputList.length; i++) {
+            stringBuilder.append(inputList[i]);
+            if (i < inputList.length - 1) stringBuilder.append(" ");
+        }
+        return stringBuilder.toString();
     }
 
     static class EnvironmentImpl implements Environment{
