@@ -7,10 +7,11 @@ import java.io.File;
  */
 public class NoRegexVisitor extends Visitor {
     private String fileName;
+    private Environment environment;
 
-    public NoRegexVisitor(String inputArguments, Environment environment) {
-        super(inputArguments, environment);
-        fileName = inputArguments;
+    public NoRegexVisitor(String fileName, Environment environment) {
+        this.fileName = fileName;
+        this.environment = environment;
     }
 
     @Override

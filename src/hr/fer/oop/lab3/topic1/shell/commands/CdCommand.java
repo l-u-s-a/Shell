@@ -1,4 +1,9 @@
-package hr.fer.oop.lab3.topic1.shell;
+package hr.fer.oop.lab3.topic1.shell.commands;
+
+import hr.fer.oop.lab3.topic1.shell.CommandStatus;
+import hr.fer.oop.lab3.topic1.shell.Environment;
+import hr.fer.oop.lab3.topic1.shell.Terminal;
+import hr.fer.oop.lab3.topic1.shell.commands.AbstractCommand;
 
 import java.io.File;
 import java.nio.file.Files;
@@ -6,12 +11,12 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 
 /**
- * Created by Luka on 07/12/14.
+ * Created by Luka on 06/12/14.
  */
-public class ListCommand extends AbstractCommand {
+public class CdCommand extends AbstractCommand {
 
-    public ListCommand() {
-        super("list", "List directory content");
+    public CdCommand() {
+        super("cd", "Change directory");
     }
 
     @Override
@@ -33,12 +38,8 @@ public class ListCommand extends AbstractCommand {
         else if (Files.exists(inputPath))
             newPath = inputPath;
 
-        String[] subDirs = new File(newPath.toString()).list();
+        terminal.setCurrentPath(newPath);
 
-        for (String dir : subDirs)
-            environment.write(dir + "    ");
-
-        environment.writeln("");
         return CommandStatus.CONTINUE;
     }
 }

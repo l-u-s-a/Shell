@@ -1,4 +1,4 @@
-package hr.fer.oop.lab3.topic1.shell;
+package hr.fer.oop.lab3.topic1.shell.commands;
 
 /**
  * Created by Luka on 07/12/14.

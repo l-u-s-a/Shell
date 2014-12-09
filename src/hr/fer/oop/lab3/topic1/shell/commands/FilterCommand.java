@@ -1,10 +1,10 @@
-package hr.fer.oop.lab3.topic1.shell;
+package hr.fer.oop.lab3.topic1.shell.commands;
+
+import hr.fer.oop.lab3.topic1.shell.*;
+import hr.fer.oop.lab3.topic1.shell.commands.AbstractCommand;
 
 import java.io.File;
-import java.nio.file.Files;
 import java.nio.file.Path;
-import java.nio.file.Paths;
-import java.util.List;
 
 /**
  * Created by Luka on 07/12/14.

@@ -1,4 +1,6 @@
-package hr.fer.oop.lab3.topic1.shell;
+package hr.fer.oop.lab3.topic1.shell.commands;
+
+import hr.fer.oop.lab3.topic1.shell.ShellCommand;
 
 /**
  * Created by Luka on 05/12/14.
@@ -23,5 +25,6 @@ public abstract class AbstractCommand implements ShellCommand {
     public String getCommandDescription() {
         return commandDescription;
     }
+
 
 }

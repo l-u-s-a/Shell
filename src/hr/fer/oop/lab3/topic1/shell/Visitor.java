@@ -7,14 +7,6 @@ import java.io.File;
  */
 public abstract class Visitor {
 
-    protected String inputArguments;
-    protected Environment environment;
-
-    protected Visitor(String inputArguments, Environment environment) {
-        this.inputArguments = inputArguments;
-        this.environment = environment;
-    }
-
     public void Visit(File current){
         if (current.isFile()) {
             operateWithFile(current);
@@ -23,15 +15,17 @@ public abstract class Visitor {
 
         if (current.isDirectory()) {
 
+            beforeEnteringDirectory(current);
+
             File[] filesInDirectory = current.listFiles();
 
             if (filesInDirectory != null) {
-                for (File file : filesInDirectory) {
-                    beforeEnteringDirectory(file);
+                for (File file : filesInDirectory)
                     Visit(file);
-                    whenLeavingDirectory(file);
-                }
             }
+
+            whenLeavingDirectory(current);
+
         }
     }
 

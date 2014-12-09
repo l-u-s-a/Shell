@@ -1,6 +1,7 @@
 package hr.fer.oop.lab3.topic1.shell;
 
 import hr.fer.oop.lab3.topic1.*;
+import hr.fer.oop.lab3.topic1.shell.commands.*;
 
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
@@ -18,12 +19,13 @@ public class MyShell {
         commands = new SimpleHashtable();
         environment = new EnvironmentImpl();
 
+
         ShellCommand[] cc = {
                 new HelpCommand(),
                 new QuitCommand(),
                 new CdCommand(),
                 new TerminalCommand(),
-                new FileCommand(),
+                new TypeCommand(),
                 new FilterCommand(),
                 new ListCommand(),
                 new CopyCommand(),
@@ -94,7 +96,7 @@ public class MyShell {
         return stringBuilder.toString();
     }
 
-    static class EnvironmentImpl implements Environment{
+    public static class EnvironmentImpl implements Environment{
         SimpleHashtable terminals = new SimpleHashtable();
         Terminal activeTerminal;
         BufferedReader reader = new BufferedReader(new InputStreamReader(System.in));

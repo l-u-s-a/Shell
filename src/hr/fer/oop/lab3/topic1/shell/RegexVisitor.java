@@ -8,11 +8,12 @@ import java.io.File;
 public class RegexVisitor extends Visitor {
     private String leftString;
     private String rightString;
+    private Environment environment;
 
 
-    public RegexVisitor(String inputArguments, Environment environment) {
-        super(inputArguments, environment);
-        initializeStrings(inputArguments);
+    public RegexVisitor(String fileName, Environment environment) {
+        initializeStrings(fileName);
+        this.environment = environment;
     }
 
     private void initializeStrings(String inputArguments) {
