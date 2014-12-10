@@ -1,4 +1,4 @@
-package hr.fer.oop.lab3.topic1.shell;
+package hr.fer.oop.lab3.topic1.shell.Visitors;
 
 import java.io.File;
 

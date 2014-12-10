@@ -24,10 +24,9 @@ public class HelpCommand extends AbstractCommand {
         environment.writeln("");
         environment.writeln("Here's a list of functions. I hope it will help you:");
 
-        Iterable<SimpleHashtable.TableEntry> commandsHashTable = environment.commands();
-        for (SimpleHashtable.TableEntry commandEntry : commandsHashTable){
-            ShellCommand command = (ShellCommand) commandEntry.getValue();
+        Iterable<ShellCommand> commandsHashTable = environment.commands();
 
+        for (ShellCommand command: commandsHashTable){
             environment.writeln("   " + command.getCommandName() + calculateSpaces(command.getCommandName()) + command.getCommandDescription());
         }
         return CommandStatus.CONTINUE;

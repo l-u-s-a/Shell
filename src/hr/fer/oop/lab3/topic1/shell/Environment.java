@@ -14,5 +14,5 @@ public interface Environment {
     void setActiveTerminal(Terminal terminal);
     Terminal getOrCreateTerminal(int terminalNumber);
     Terminal[] listTerminals();
-    Iterable<SimpleHashtable.TableEntry> commands();
+    Iterable<ShellCommand> commands();
 }

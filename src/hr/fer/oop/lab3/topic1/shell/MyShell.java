@@ -3,10 +3,8 @@ package hr.fer.oop.lab3.topic1.shell;
 import hr.fer.oop.lab3.topic1.*;
 import hr.fer.oop.lab3.topic1.shell.commands.*;
 
-import java.io.BufferedReader;
-import java.io.BufferedWriter;
-import java.io.IOException;
-import java.io.InputStreamReader;
+import java.io.*;
+import java.util.Iterator;
 
 /**
  * Created by Luka on 05/12/14.
@@ -100,7 +98,7 @@ public class MyShell {
         SimpleHashtable terminals = new SimpleHashtable();
         Terminal activeTerminal;
         BufferedReader reader = new BufferedReader(new InputStreamReader(System.in));
-        BufferedWriter writer;
+        BufferedWriter writer = new BufferedWriter(new OutputStreamWriter(System.out));
 
 
         @Override
@@ -117,12 +115,17 @@ public class MyShell {
 
         @Override
         public void write(String text) {
-            System.out.print(text);
+            try {
+                writer.write(text);
+                writer.flush();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
         }
 
         @Override
         public void writeln(String text) {
-            System.out.println(text);
+            write(text + "\n");
         }
 
         @Override
@@ -152,7 +155,8 @@ public class MyShell {
             Terminal[] existingTerminals = new Terminal[numOfTerminals];
             int index = 0;
 
-            for (SimpleHashtable.TableEntry terminalEntry : terminals){
+            for (Object terminalObject : terminals){
+                SimpleHashtable.TableEntry terminalEntry = (SimpleHashtable.TableEntry) terminalObject;
                 Terminal terminal = (Terminal) terminalEntry.getValue();
                 existingTerminals[index++] = terminal;
             }
@@ -160,8 +164,34 @@ public class MyShell {
         }
 
         @Override
-        public Iterable<SimpleHashtable.TableEntry> commands() {
-            return commands;
+        public Iterable<ShellCommand> commands() {
+            return new ShellCommandIterable();
+        }
+
+
+        private static class ShellCommandIterable implements Iterable<ShellCommand> {
+            @Override
+            public Iterator<ShellCommand> iterator() {
+                return new ShellCommandIterator(commands.iterator());
+            }
+        }
+
+        private static class ShellCommandIterator implements Iterator<ShellCommand> {
+            private Iterator<SimpleHashtable.TableEntry> tableEntryIterator;
+
+            private ShellCommandIterator(Iterator<SimpleHashtable.TableEntry> tableEntryIterator) {
+                this.tableEntryIterator = tableEntryIterator;
+            }
+
+            @Override
+            public boolean hasNext() {
+                return tableEntryIterator.hasNext();
+            }
+
+            @Override
+            public ShellCommand next() {
+                return (ShellCommand)tableEntryIterator.next().getValue();
+            }
         }
     }
 }

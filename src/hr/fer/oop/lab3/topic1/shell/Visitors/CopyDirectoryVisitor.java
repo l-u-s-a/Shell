@@ -1,5 +1,6 @@
-package hr.fer.oop.lab3.topic1.shell;
+package hr.fer.oop.lab3.topic1.shell.Visitors;
 
+import hr.fer.oop.lab3.topic1.shell.Visitors.Visitor;
 import hr.fer.oop.lab3.topic1.shell.commands.CopyCommand;
 
 import java.io.File;

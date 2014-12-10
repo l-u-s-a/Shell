@@ -1,7 +1,9 @@
 package hr.fer.oop.lab3.topic1.shell.commands;
 
 import hr.fer.oop.lab3.topic1.shell.*;
-import hr.fer.oop.lab3.topic1.shell.commands.AbstractCommand;
+import hr.fer.oop.lab3.topic1.shell.Visitors.NoRegexVisitor;
+import hr.fer.oop.lab3.topic1.shell.Visitors.RegexVisitor;
+import hr.fer.oop.lab3.topic1.shell.Visitors.Visitor;
 
 import java.io.File;
 import java.nio.file.Path;

@@ -1,14 +1,11 @@
 package hr.fer.oop.lab3.topic1.shell.commands;
 
 import hr.fer.oop.lab3.topic1.shell.CommandStatus;
-import hr.fer.oop.lab3.topic1.shell.CopyDirectoryVisitor;
+import hr.fer.oop.lab3.topic1.shell.Visitors.CopyDirectoryVisitor;
 import hr.fer.oop.lab3.topic1.shell.Environment;
-import hr.fer.oop.lab3.topic1.shell.Visitor;
-import hr.fer.oop.lab3.topic1.shell.commands.AbstractCommand;
+import hr.fer.oop.lab3.topic1.shell.Visitors.Visitor;
 
 import java.io.File;
-import java.io.IOException;
-import java.nio.file.Files;
 
 /**
  * Created by Luka on 07/12/14.

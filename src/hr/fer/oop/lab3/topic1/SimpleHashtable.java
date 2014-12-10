@@ -27,6 +27,7 @@ public class SimpleHashtable implements Iterable<SimpleHashtable.TableEntry> {
 
     @Override
     public Iterator<TableEntry> iterator() {
+
         return new HashTableIterator();
     }
 
