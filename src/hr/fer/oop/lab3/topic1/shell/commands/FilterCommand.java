@@ -30,21 +30,9 @@ public class FilterCommand extends AbstractCommand {
         else
             visitor = new RegexVisitor(inputArguments, environment);
 
-        visitor.Visit(current);
+        visitor.visit(current);
 
 
-
-//        for (String string : input){
-//            environment.writeln(string);
-//        }
-//
-//
-//        String[] subDirs = new File(path.toString()).list();
-//
-//        for (String dir : subDirs)
-//            environment.write(dir + "    ");
-//
-//        environment.writeln("");
         return CommandStatus.CONTINUE;
     }
 }

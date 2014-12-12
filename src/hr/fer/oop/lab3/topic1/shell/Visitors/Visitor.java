@@ -7,7 +7,7 @@ import java.io.File;
  */
 public abstract class Visitor {
 
-    public void Visit(File current){
+    public void visit(File current){
         if (current.isFile()) {
             operateWithFile(current);
             return;
@@ -21,7 +21,7 @@ public abstract class Visitor {
 
             if (filesInDirectory != null) {
                 for (File file : filesInDirectory)
-                    Visit(file);
+                    visit(file);
             }
 
             whenLeavingDirectory(current);

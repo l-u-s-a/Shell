@@ -165,7 +165,24 @@ public class MyShell {
 
         @Override
         public Iterable<ShellCommand> commands() {
-            return new ShellCommandIterable();
+
+            return new Iterable<ShellCommand>() {
+                @Override
+                public Iterator<ShellCommand> iterator() {
+                    return new Iterator<ShellCommand>() {
+                        Iterator<SimpleHashtable.TableEntry> commandsTableEntryIterator = commands.iterator();
+                        @Override
+                        public boolean hasNext() {
+                            return commandsTableEntryIterator.hasNext();
+                        }
+
+                        @Override
+                        public ShellCommand next() {
+                            return (ShellCommand) commandsTableEntryIterator.next().getValue();
+                        }
+                    };
+                }
+            };
         }
 
 

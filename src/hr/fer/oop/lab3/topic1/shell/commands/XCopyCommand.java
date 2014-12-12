@@ -18,7 +18,7 @@ public class XCopyCommand extends AbstractCommand {
 
     @Override
     public CommandStatus execute(Environment environment, String inputArguments) {
-
+        
 
         String[] paths = inputArguments.split(" ");
 
@@ -36,7 +36,7 @@ public class XCopyCommand extends AbstractCommand {
 
         Visitor visitor = new CopyDirectoryVisitor(outputFile);
 
-        visitor.Visit(inputFile);
+        visitor.visit(inputFile);
 
 
         return CommandStatus.CONTINUE;
