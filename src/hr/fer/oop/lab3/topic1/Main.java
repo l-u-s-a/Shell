@@ -46,9 +46,10 @@ public class Main {
 
         System.out.println(examMarks);
 
-        for (Object entry : examMarks){
-            SimpleHashtable.TableEntry pair = (SimpleHashtable.TableEntry) entry;
-            System.out.printf("%s => %s%n", pair.getKey(), pair.getValue());
+        for (SimpleHashtable.TableEntry entry : examMarks){
+            for (SimpleHashtable.TableEntry tableEntry : examMarks) {
+                System.out.printf("%s => %s%n", tableEntry.getKey(), tableEntry.getValue());
+            }
         }
 
 

@@ -165,7 +165,6 @@ public class MyShell {
 
         @Override
         public Iterable<ShellCommand> commands() {
-
             return new Iterable<ShellCommand>() {
                 @Override
                 public Iterator<ShellCommand> iterator() {
@@ -183,32 +182,6 @@ public class MyShell {
                     };
                 }
             };
-        }
-
-
-        private static class ShellCommandIterable implements Iterable<ShellCommand> {
-            @Override
-            public Iterator<ShellCommand> iterator() {
-                return new ShellCommandIterator(commands.iterator());
-            }
-        }
-
-        private static class ShellCommandIterator implements Iterator<ShellCommand> {
-            private Iterator<SimpleHashtable.TableEntry> tableEntryIterator;
-
-            private ShellCommandIterator(Iterator<SimpleHashtable.TableEntry> tableEntryIterator) {
-                this.tableEntryIterator = tableEntryIterator;
-            }
-
-            @Override
-            public boolean hasNext() {
-                return tableEntryIterator.hasNext();
-            }
-
-            @Override
-            public ShellCommand next() {
-                return (ShellCommand)tableEntryIterator.next().getValue();
-            }
         }
     }
 }
