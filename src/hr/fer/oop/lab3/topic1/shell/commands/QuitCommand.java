@@ -2,8 +2,7 @@ package hr.fer.oop.lab3.topic1.shell.commands;
 
 import hr.fer.oop.lab3.topic1.shell.CommandStatus;
 import hr.fer.oop.lab3.topic1.shell.Environment;
-import hr.fer.oop.lab3.topic1.shell.commands.AbstractCommand;
-import hr.fer.oop.lab3.topic1.shell.commands.CommandException;
+import hr.fer.oop.lab3.topic1.shell.Exceptions.CommandException;
 
 /**
  * Created by Luka on 06/12/14.

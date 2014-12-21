@@ -1,4 +1,4 @@
-package hr.fer.oop.lab3.topic1.shell.commands;
+package hr.fer.oop.lab3.topic1.shell.Exceptions;
 
 /**
  * Created by Luka on 07/12/14.
@@ -6,8 +6,5 @@ package hr.fer.oop.lab3.topic1.shell.commands;
 public class CommandException extends RuntimeException {
     public CommandException(String message) {
         super(message);
-    }
-
-    public CommandException() {
     }
 }

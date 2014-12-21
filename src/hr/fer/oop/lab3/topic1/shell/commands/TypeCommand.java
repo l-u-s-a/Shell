@@ -3,15 +3,13 @@ package hr.fer.oop.lab3.topic1.shell.commands;
 import hr.fer.oop.lab3.topic1.shell.CommandStatus;
 import hr.fer.oop.lab3.topic1.shell.Environment;
 import hr.fer.oop.lab3.topic1.shell.Terminal;
-import hr.fer.oop.lab3.topic1.shell.commands.AbstractCommand;
-import hr.fer.oop.lab3.topic1.shell.commands.CommandException;
+import hr.fer.oop.lab3.topic1.shell.Exceptions.CommandException;
 
 import java.io.*;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
-import java.util.ArrayList;
 import java.util.List;
 
 /**

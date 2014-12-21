@@ -1,6 +1,8 @@
 package hr.fer.oop.lab3.topic1.shell;
 
 import hr.fer.oop.lab3.topic1.*;
+import hr.fer.oop.lab3.topic1.shell.Exceptions.CommandException;
+import hr.fer.oop.lab3.topic1.shell.Exceptions.KeyNotFoundException;
 import hr.fer.oop.lab3.topic1.shell.commands.*;
 
 import java.io.*;
@@ -27,7 +29,7 @@ public class MyShell {
                 new FilterCommand(),
                 new ListCommand(),
                 new CopyCommand(),
-                new XCopyCommand()
+                new XCopyCommand(),
         };
 
         for (ShellCommand c : cc)
@@ -44,27 +46,43 @@ public class MyShell {
         do {
             Terminal activeTerminal = environment.getActiveTerminal();
             environment.write(activeTerminal.getPrompt());
+
             String inputLine = environment.readLine();
-
             String command = getCommandFromInputLine(inputLine);
-
             String arguments = getInputArgumentsFromInputLine(inputLine);
-
             ShellCommand shellCommand;
+
             try {
+//		1. look up if command is our custom command
+//		2. if not, try to run a system command:
+//			- look up in /usr/bin and try to run from there
+//		3. if nothing found, throw exception
                 shellCommand = (ShellCommand) commands.get(command);
                 status = shellCommand.execute(environment, arguments);
+            } catch (KeyNotFoundException e) {
+                if (SystemCommand.exists(command))
+                    SystemCommand.execute(environment, inputLine);
+
+                else
+                    environment.writeln("command doesn't exist!");
+
+                continue;
+
+
             } catch (CommandException e) {
                 environment.writeln(e.getMessage());
                 continue;
             } catch (IndexOutOfBoundsException e) {
                 environment.writeln(e.getMessage());
                 continue;
-            }catch (NullPointerException e) {
+            } catch (NullPointerException e) {
                 environment.writeln(e.getMessage());
                 continue;
-            } catch (IllegalArgumentException e){
+            } catch (IllegalArgumentException e) {
                 environment.writeln(inputLine + " is not recognized as valid command");
+                continue;
+            } catch (Exception e) {
+                environment.writeln(e.getMessage());
                 continue;
             }
 
@@ -74,13 +92,13 @@ public class MyShell {
 
     }
 
-    private static String getCommandFromInputLine(String inputLine) {
+    public static String getCommandFromInputLine(String inputLine) {
         String[] inputList = inputLine.split(" ");
         String command = inputList[0];
         return command;
     }
 
-    private static String getInputArgumentsFromInputLine(String inputLine) {
+    public static String getInputArgumentsFromInputLine(String inputLine) {
         String [] inputList = inputLine.split(" ");
 
         if (inputList.length < 2) return "";
@@ -103,7 +121,7 @@ public class MyShell {
 
         @Override
         public String readLine() {
-            String line = "";
+            String line = null;
             try {
                 line = reader.readLine();
             } catch (IOException e) {

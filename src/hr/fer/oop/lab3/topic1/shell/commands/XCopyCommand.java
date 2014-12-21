@@ -1,6 +1,7 @@
 package hr.fer.oop.lab3.topic1.shell.commands;
 
 import hr.fer.oop.lab3.topic1.shell.CommandStatus;
+import hr.fer.oop.lab3.topic1.shell.Exceptions.CommandException;
 import hr.fer.oop.lab3.topic1.shell.Visitors.CopyDirectoryVisitor;
 import hr.fer.oop.lab3.topic1.shell.Environment;
 import hr.fer.oop.lab3.topic1.shell.Visitors.Visitor;

@@ -1,5 +1,9 @@
 package hr.fer.oop.lab3.topic1;
 
+import hr.fer.oop.lab3.topic1.shell.Exceptions.CommandException;
+import hr.fer.oop.lab3.topic1.shell.Exceptions.KeyNotFoundException;
+import hr.fer.oop.lab3.topic1.shell.Exceptions.KeyNotFoundException;
+
 import java.util.Iterator;
 import java.util.NoSuchElementException;
 
@@ -124,7 +128,7 @@ public class SimpleHashtable implements Iterable<SimpleHashtable.TableEntry> {
         check(key);
 
         if (!containsKey(key))
-            throw new IllegalArgumentException("key not found");
+            throw new KeyNotFoundException();
 
         int partitionNumber = generatePartition(key);
 
