@@ -1,7 +1,5 @@
 package hr.fer.oop.lab3.topic1;
 
-import hr.fer.oop.lab3.topic1.shell.Exceptions.CommandException;
-import hr.fer.oop.lab3.topic1.shell.Exceptions.KeyNotFoundException;
 import hr.fer.oop.lab3.topic1.shell.Exceptions.KeyNotFoundException;
 
 import java.util.Iterator;
@@ -13,9 +11,9 @@ import java.util.NoSuchElementException;
  * @author Luka
  * @version 1.00
  */
-public class SimpleHashtable implements Iterable<SimpleHashtable.TableEntry> {
+public class SimpleHashtable<K,V> implements Iterable<SimpleHashtable.TableEntry> {
 
-    private TableEntry[] table;
+    private TableEntry<K,V>[] table;
     private int size;
 
     private String[] methods = new String[] {"put", "get", "size", "containsKey", "containsValue", "iterate", "remove", "isEmpty", "quit"};
@@ -55,7 +53,7 @@ public class SimpleHashtable implements Iterable<SimpleHashtable.TableEntry> {
      * @param key key of the new entry
      * @param value value of the new entry
      */
-    public void put(Object key, Object value) {
+    public void put(K key, V value) {
 
         check(key, value);
 
@@ -113,7 +111,7 @@ public class SimpleHashtable implements Iterable<SimpleHashtable.TableEntry> {
      * @param key entry key
      * @return generated adress of the partition
      */
-    private int generatePartition(Object key){
+    private int generatePartition(K key){
         return  Math.abs(key.hashCode()) % table.length;
     }
 
@@ -123,7 +121,7 @@ public class SimpleHashtable implements Iterable<SimpleHashtable.TableEntry> {
      * @param key entry key
      * @return value of entry with requested key
      */
-    public Object get(Object key){
+    public Object get(K key){
 
         check(key);
 
@@ -156,8 +154,7 @@ public class SimpleHashtable implements Iterable<SimpleHashtable.TableEntry> {
      * @param key entry key
      * @return {@code true} if hash contains entry with requested
      */
-
-    public boolean containsKey(Object key){
+    public boolean containsKey(K key){
 
         int partition = generatePartition(key);
 
@@ -176,7 +173,7 @@ public class SimpleHashtable implements Iterable<SimpleHashtable.TableEntry> {
      * @param value entry value
      * @return {@code true} if hash contains entry with requested
      */
-    public boolean containsValue(Object value){
+    public boolean containsValue(V value){
 
         for (TableEntry entry : table){
 
@@ -189,7 +186,7 @@ public class SimpleHashtable implements Iterable<SimpleHashtable.TableEntry> {
     }
 
 
-    public void remove(Object key) {
+    public void remove(K key) {
         if (isEmpty())
             return;
 
@@ -243,85 +240,27 @@ public class SimpleHashtable implements Iterable<SimpleHashtable.TableEntry> {
     }
 
 
-    /**
-     * @param input input string
-     * @return result of executing commands from input
-     */
-    public Object execute(String input) {
-
-        check(input);
-
-        String[] arguments = input.split(" ");
-
-        String method = arguments[0];
-
-        check(method);
-
-        method = method.toLowerCase();
-
-        switch (method){
-            case "put":
-                checkArguments(arguments, 3);
-                put(arguments[1], arguments[2]);
-                break;
-
-            case "get":
-                checkArguments(arguments, 2);
-                return get(arguments[1]);
-
-            case "containskey":
-                checkArguments(arguments, 2);
-                return containsKey(arguments[1]);
-
-            case "containsvalue":
-                checkArguments(arguments, 2);
-                return containsValue(arguments[1]);
-
-            case "remove":
-                checkArguments(arguments, 2);
-                remove(arguments[1]);
-                break;
-
-            case "size":
-                return size;
-
-            case "isempty":
-                return isEmpty();
-
-            case "print":
-                return this;
-
-            case "quit":
-                System.exit(1);
-                break;
-
-            case "list":
-                for (String singleMethod : methods)
-                    System.out.println(singleMethod);
-                break;
-
-            case "iterate":
-                for (Object entry : this){
-                    SimpleHashtable.TableEntry pair = (SimpleHashtable.TableEntry) entry;
-                    System.out.printf("%s => %s%n", pair.getKey(), pair.getValue());
-                }
-        }
-        return null;
-    }
-
     private static void checkArguments(String[] arguments, int numberOfArguments) {
         if (arguments.length < numberOfArguments)
             throw new IllegalArgumentException("not enough arguments provided.");
 
     }
 
+    public Iterable<K> keys() {
+        return new KeySet();
+    }
+
+    public Iterable<V> values() {
+        return new ValueSet();
+    }
+
     private class HashTableIterator implements Iterator<TableEntry> {
-        private Object currentEntryKey;
+        private K currentEntryKey;
 
         @Override
         public boolean hasNext() {
             try {
-                Object oldCurrentEntryKey = currentEntryKey;
+                K oldCurrentEntryKey = currentEntryKey;
                 next();
                 currentEntryKey = oldCurrentEntryKey;
                 return true;
@@ -331,9 +270,9 @@ public class SimpleHashtable implements Iterable<SimpleHashtable.TableEntry> {
         }
 
         @Override
-        public TableEntry next() {
+        public TableEntry<K,V> next() {
 
-            TableEntry nextEntry;
+            TableEntry<K,V> nextEntry;
 
             if (currentEntryKey == null)
                 nextEntry = firstAvailableElement();
@@ -341,7 +280,7 @@ public class SimpleHashtable implements Iterable<SimpleHashtable.TableEntry> {
             else {
                 int pretinac = generatePartition(currentEntryKey);
 
-                TableEntry entry = table[pretinac];
+                TableEntry<K,V> entry = table[pretinac];
 
                 while (!entry.keyEquals(currentEntryKey))
                     entry = entry.next;
@@ -356,13 +295,13 @@ public class SimpleHashtable implements Iterable<SimpleHashtable.TableEntry> {
 
         }
 
-        private TableEntry firstAvailableElement() {
+        private TableEntry<K,V> firstAvailableElement() {
             return firstAvailableElement(0);
         }
 
-        private TableEntry firstAvailableElement(int partitionNumber) {
+        private TableEntry<K,V> firstAvailableElement(int partitionNumber) {
             for (int pretinac = partitionNumber; pretinac < table.length; pretinac++){
-                TableEntry entry = table[pretinac];
+                TableEntry<K,V> entry = table[pretinac];
                 if (entry != null){
                     return entry;
                 }
@@ -382,30 +321,26 @@ public class SimpleHashtable implements Iterable<SimpleHashtable.TableEntry> {
     }
 
 
-    public static class TableEntry {
-        private Object key;
-        private Object value;
-        private TableEntry next;
+    public static class TableEntry<K,V> {
+        private K key;
+        private V value;
+        private TableEntry<K,V> next;
 
-        public TableEntry(Object key, Object value, TableEntry next){
+        public TableEntry(K key, V value, TableEntry<K,V> next){
             this.key = key;
             this.value = value;
             this.next = next;
         }
 
-        public TableEntry(){
-
-        }
-
-        public Object getKey(){
+        public K getKey(){
             return key;
         }
 
-        public Object getValue(){
+        public V getValue(){
             return value;
         }
 
-        public void setValue(Object value){
+        public void setValue(V value){
             this.value = value;
         }
 
@@ -413,14 +348,49 @@ public class SimpleHashtable implements Iterable<SimpleHashtable.TableEntry> {
             return key + ": " + value;
         }
 
-        private boolean keyEquals(Object key){
+        private boolean keyEquals(K key){
 
             return this.key.toString().equalsIgnoreCase(key.toString());
         }
 
         private boolean valueEquals(Object value){
+            return value.equals(this.value);
+        }
+    }
 
-            return this.value.toString().equalsIgnoreCase(value.toString());
+    private class KeySet implements Iterable<K> {
+        @Override
+        public Iterator<K> iterator() {
+            return new Iterator<K>() {
+                Iterator<SimpleHashtable.TableEntry> tableEntryIterator = SimpleHashtable.this.iterator();
+                @Override
+                public boolean hasNext() {
+                    return tableEntryIterator.hasNext();
+                }
+
+                @Override
+                public K next() {
+                    return (K)tableEntryIterator.next().getKey();
+                }
+            };
+        }
+    }
+
+    private class ValueSet implements Iterable<V> {
+        @Override
+        public Iterator<V> iterator() {
+            return new Iterator<V>() {
+                Iterator<SimpleHashtable.TableEntry> tableEntryIterator = SimpleHashtable.this.iterator();
+                @Override
+                public boolean hasNext() {
+                    return tableEntryIterator.hasNext();
+                }
+
+                @Override
+                public V next() {
+                    return (V)tableEntryIterator.next().getValue();
+                }
+            };
         }
     }
 }

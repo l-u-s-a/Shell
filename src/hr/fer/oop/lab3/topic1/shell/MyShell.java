@@ -12,7 +12,7 @@ import java.util.Iterator;
  * Created by Luka on 05/12/14.
  */
 public class MyShell {
-    private static SimpleHashtable commands;
+    private static SimpleHashtable<String, ShellCommand> commands;
     private static Environment environment;
 
     static {
@@ -113,7 +113,7 @@ public class MyShell {
     }
 
     public static class EnvironmentImpl implements Environment{
-        SimpleHashtable terminals = new SimpleHashtable();
+        SimpleHashtable<Integer, Terminal> terminals = new SimpleHashtable();
         Terminal activeTerminal;
         BufferedReader reader = new BufferedReader(new InputStreamReader(System.in));
         BufferedWriter writer = new BufferedWriter(new OutputStreamWriter(System.out));

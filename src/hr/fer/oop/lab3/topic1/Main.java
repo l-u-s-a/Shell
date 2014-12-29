@@ -13,7 +13,7 @@ public class Main {
 
         BufferedReader reader = new BufferedReader(new InputStreamReader(System.in));
         int capacity = 0;
-        SimpleHashtable examMarks = null;
+        SimpleHashtable<String, Integer> examMarks = null;
 
         while (true) {
             System.out.print("please provide capacity: ");
@@ -46,37 +46,14 @@ public class Main {
 
         System.out.println(examMarks);
 
+        for (String name : examMarks.keys())
+            System.out.println("Ime = " + name);
+
+        for (Integer grade : examMarks.values())
+            System.out.println("Ocjena = " + grade);
+
         for (SimpleHashtable.TableEntry entry : examMarks){
-            for (SimpleHashtable.TableEntry tableEntry : examMarks) {
-                System.out.printf("%s => %s%n", tableEntry.getKey(), tableEntry.getValue());
-            }
-        }
-
-
-        while (true) {
-            System.out.print("What you want to do:  ");
-            try {
-                String input = reader.readLine();
-                Object answer = examMarks.execute(input);
-
-                if (answer != null)
-                    System.out.println(answer);
-
-            } catch (NumberFormatException e) {
-                System.out.println(e + " is not a number.");
-                continue;
-
-            } catch (IllegalArgumentException e) {
-                System.out.println(e);
-                continue;
-
-            } catch (IOException e) {
-                e.printStackTrace();
-                System.exit(1);
-
-            } catch (Exception e) {
-                System.out.println(e);
-            }
+            System.out.printf("%s => %s%n", entry.getKey(), entry.getValue());
         }
 
     }
