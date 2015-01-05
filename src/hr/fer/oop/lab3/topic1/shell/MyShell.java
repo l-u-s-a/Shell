@@ -30,6 +30,7 @@ public class MyShell {
                 new ListCommand(),
                 new CopyCommand(),
                 new XCopyCommand(),
+                new DirCommand()
         };
 
         for (ShellCommand c : cc)

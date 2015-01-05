@@ -8,9 +8,9 @@ import java.io.File;
  * Created by Luka on 07/12/14.
  */
 public class RegexVisitor extends Visitor {
-    private String leftString;
-    private String rightString;
-    private Environment environment;
+    protected String leftString;
+    protected String rightString;
+    protected Environment environment;
 
 
     public RegexVisitor(String fileName, Environment environment) {
@@ -27,7 +27,6 @@ public class RegexVisitor extends Visitor {
             rightString = "";
         else
             rightString = strings[1].toLowerCase();
-
     }
 
     @Override
