@@ -11,17 +11,14 @@ import java.io.File;
 import java.io.IOException;
 import java.nio.file.*;
 import java.nio.file.attribute.BasicFileAttributes;
-import java.util.ArrayList;
-import java.util.Comparator;
-import java.util.List;
-import java.util.TreeSet;
+import java.util.*;
 
 /**
  * Created by Luka on 30/12/14.
  */
 public class DirCommand extends AbstractCommand {
 
-    List<File> listOfFiles = new ArrayList<>();
+    private Collection<File> listOfFiles;
 
     public DirCommand() {
         super("dir", "advanced listing directories");
@@ -30,7 +27,7 @@ public class DirCommand extends AbstractCommand {
     @Override
     public CommandStatus execute(Environment environment, String inputArguments) {
 
-//        if (inputArguments == "") throw new CommandException("dir needs at least one argument!");
+        listOfFiles = new ArrayList<>();
 
         String[] inputList = inputArguments.split(" +");
 
@@ -39,86 +36,88 @@ public class DirCommand extends AbstractCommand {
         for (String word : inputList)
             inputWords.add(word);
 
-        Comparator<File> comparator = null;
-
-        Visitor visitor = new DirVisitor();
-
         Path currentPath;
 
-        if (!Files.exists(Paths.get(inputWords.get(0))) || inputArguments == "")
-            currentPath = environment.getActiveTerminal().getCurrentPath();
-        else {
+        if (inputWords.size() > 0 && Files.exists(Paths.get(inputWords.get(0))) && inputArguments != "") {
             currentPath = Paths.get(inputWords.get(0));
+            inputWords.remove(0);
+        } else {
+            currentPath = environment.getActiveTerminal().getCurrentPath();
+        }
+
+        if (inputWords.size() > 0 && inputWords.get(0).contains("/sort=")) {
+            Comparator<File> comparator = new FileComparator(inputWords.get(0).split("/sort=")[1]);
+            listOfFiles = new TreeSet<>(comparator);
             inputWords.remove(0);
         }
 
+        Visitor visitor = new DirVisitor();
         visitor.visit(currentPath.toFile());
 
-        for (String word : inputWords) {
 
-            if (word.contains("sort=")) {
-                comparator = new FileComparator(word.split("/sort=")[1]);
+        if (inputWords.size() > 0 && inputWords.get(0).contains("/filter=")) {
+            String arg = inputWords.get(0).split("/filter=")[1];
+            if (arg.contains("*")) {
+                regexFilter(arg);
+            } else {
+                noRegexFilter(arg);
             }
-
-            else if (word.split("/filter=").length > 0) {
-                String arg = word.split("/filter=")[1];
-                if (arg.contains("*")) {
-                    regexFilter(listOfFiles, arg);
-                }
-                else {
-                    noRegexFilter(listOfFiles, arg);
-                }
-            }
-            else if (word.split("/type=").length > 0) {
-                typeFilter(word.split("/type=")[1]);
-            }
-
-            System.out.println("tu sam");
+            inputWords.remove(0);
         }
 
-//        TreeSet<File> set = new TreeSet<>(comparator);
-//
-//        //print all files
-//        for (File file : set)
-//            environment.writeln(file.toString());
+        if (inputWords.size() > 0 && inputWords.get(0).contains("/type=")) {
+            typeFilter(inputWords.get(0).split("/type=")[1]);
+            inputWords.remove(0);
+        }
+
+        if (inputWords.size() > 0 && inputArguments != "") throw new CommandException("Invalid input");
+
+        if (getListOfFiles().size() > 0) {
+            for (File file : getListOfFiles())
+                environment.writeln(file.toString());
+        } else
+            environment.writeln("nothing found...");
 
         return CommandStatus.CONTINUE;
     }
 
     private void typeFilter(String s) {
-        List<File> filteredList = new ArrayList<>();
+        Iterator<File> fileIterator = getListOfFiles().iterator();
         switch (s) {
             case "f":
-                for (File file : getListOfFiles())
-                    if (file.isFile()) filteredList.add(file);
+                while (fileIterator.hasNext()) {
+                    File file = fileIterator.next();
+                    if (file.isDirectory())
+                        fileIterator.remove();
+                }
                 break;
             case "d":
-                for (File file : getListOfFiles())
-                    if (file.isDirectory()) filteredList.add(file);
+                while (fileIterator.hasNext()) {
+                    File file = fileIterator.next();
+                    if (file.isFile())
+                        fileIterator.remove();
+                }
                 break;
+            default:
+                throw new CommandException(s + " is not allowed in type filter(d-filter directories, f-filter files)");
         }
-        setListOfFiles(filteredList);
     }
 
-    private void noRegexFilter(List<File> listOfFiles, String arg) {
-        List<File> filteredList = new ArrayList<>();
-        for (File file : listOfFiles) {
-            if (file.getName().equalsIgnoreCase(arg))
-                filteredList.add(file);
+    private void noRegexFilter(String arg) {
+        Iterator<File> fileIterator = getListOfFiles().iterator();
+        while (fileIterator.hasNext()) {
+            File file = fileIterator.next();
+            if (!file.getName().equalsIgnoreCase(arg))
+                fileIterator.remove();
         }
-        setListOfFiles(filteredList);
     }
 
-    public void setListOfFiles(List<File> listOfFiles) {
-        this.listOfFiles = listOfFiles;
-    }
 
-    public List<File> getListOfFiles() {
+    public Collection<File> getListOfFiles() {
         return listOfFiles;
     }
 
-    private void regexFilter(List<File> files, String args) {
-        List<File> filteredList = new ArrayList<>();
+    private void regexFilter(String args) {
         String[] strings = args.split("\\*");
         String leftString = strings[0].toLowerCase();
         String rightString;
@@ -128,24 +127,26 @@ public class DirCommand extends AbstractCommand {
         else
             rightString = strings[1].toLowerCase();
 
-        for (File file : files) {
+        Iterator<File> fileIterator = getListOfFiles().iterator();
+
+        while (fileIterator.hasNext()) {
+            File file = fileIterator.next();
             String fileName = file.getName().toLowerCase();
 
-            if (fileName.startsWith(leftString) && fileName.endsWith(rightString))
-                filteredList.add(file);
+            if (!fileName.startsWith(leftString) || !fileName.endsWith(rightString)) {
+                fileIterator.remove();
+            }
         }
-        setListOfFiles(filteredList);
     }
 
     private class DirVisitor extends Visitor {
         @Override
         protected void whenLeavingDirectory(File file) {
-
         }
 
         @Override
         protected void beforeEnteringDirectory(File directory) {
-
+            getListOfFiles().add(directory);
         }
 
         @Override

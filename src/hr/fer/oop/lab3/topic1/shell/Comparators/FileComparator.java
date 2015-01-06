@@ -1,5 +1,7 @@
 package hr.fer.oop.lab3.topic1.shell.Comparators;
 
+import hr.fer.oop.lab3.topic1.shell.Exceptions.CommandException;
+
 import java.io.File;
 import java.util.ArrayList;
 import java.util.Comparator;
@@ -13,7 +15,6 @@ public class FileComparator implements Comparator<File> {
 
     public FileComparator(String argument) {
         for (String character : argument.split("")) {
-            System.out.println(character);
             switch (character) {
                 case "e":
                     comparators.add(new ExtensionComparator());
@@ -45,6 +46,8 @@ public class FileComparator implements Comparator<File> {
                 case "T":
                     comparators.add(new TypeComparator().reversed());
                     break;
+                default:
+                    throw new CommandException(character + " is not valid sort mark(e-extension, s-size, d-date, n-name, t-type)");
             }
         }
     }
