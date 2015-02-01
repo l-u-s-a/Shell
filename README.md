@@ -1,8 +1,7 @@
 Shell
 ====
-<img src="http://i1290.photobucket.com/albums/b531/uljar9/shell_zpsdt14ekce.jpg"/>
-
 This is my shell implemented in Java.
+<img src="http://i1290.photobucket.com/albums/b531/uljar9/shell_zpsdt14ekce.jpg"/>
 
 Install with:
 
