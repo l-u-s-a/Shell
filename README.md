@@ -15,3 +15,8 @@ Navigate to *shell* directory & run with:
          java -cp bin hr.fer.oop.lab3.topic1.shell.MyShell
          
          
+Tasks that were implemented you can find here:
+- <a href="https://www.mediafire.com/?o4iu5pa2kl5lv1u">First part</a>
+- <a href="https://www.mediafire.com/?dh9xt9ui00ib9eu">Second part</a>
+         
+         
